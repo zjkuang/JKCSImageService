@@ -138,7 +138,7 @@ public class JKCSImage: Equatable {
         // To be overridden by subclass
     }
     
-    func loadImageInfo(completionHandler: @escaping (Result<ExpressibleByNilLiteral?, JKCSError>) -> ()) {
+    public func loadImageInfo(completionHandler: @escaping (Result<ExpressibleByNilLiteral?, JKCSError>) -> ()) {
         // To be overriddent by subclass
     }
 }
