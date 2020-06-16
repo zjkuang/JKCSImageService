@@ -10,8 +10,8 @@ import Foundation
 import JKCSSwift
 
 public enum JKCSImageDataSourceType {
-    case Flickr
-    // case Imgur, Unsplash, Shutterstock, GettyImages
+    case Flickr, Imgur
+    // case Unsplash, Shutterstock, GettyImages
 }
 
 open class JKCSImageSearchResult {
