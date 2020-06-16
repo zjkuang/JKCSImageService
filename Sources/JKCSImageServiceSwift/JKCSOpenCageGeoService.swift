@@ -12,7 +12,7 @@ import JKCSSwift
 /// Warning: This key was generated for public demo purpose. If the key is private, make sure to put it in a separate file and use git-crypt to encrypt it before pushing.
 public let openCageGeoApiKey = "8824813b56b84f6f9fd3024d0d080388"
 
-public class JKCSOpenCageGeoService {
+open class JKCSOpenCageGeoService {
     public init() {}
     
     public static func map(latitude: String, longitude: String, completionHander: @escaping (Result<[String : Any], JKCSError>) -> ()) {

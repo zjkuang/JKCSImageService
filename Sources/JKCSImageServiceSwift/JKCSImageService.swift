@@ -14,7 +14,7 @@ public enum JKCSImageDataSourceType {
     // case Imgur, Unsplash, Shutterstock, GettyImages
 }
 
-public class JKCSImageSearchResult {
+open class JKCSImageSearchResult {
     public let term: String
     public var total: Int = -1
     public var page: Int = -1

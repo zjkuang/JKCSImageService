@@ -14,7 +14,7 @@ import JKCSSwift
 /// Warning: This key was generated for public demo purpose. If the key is private, make sure to put it in a separate file and use git-crypt to encrypt it before pushing.
 public let flickrAppKey = "375fcd70b085ca964dc62e626ce9d69d"
 
-public class JKCSFlickr: JKCSImageService {
+open class JKCSFlickr: JKCSImageService {
     public var searchResult = JKCSImageSearchResult()
     
     public init() {}

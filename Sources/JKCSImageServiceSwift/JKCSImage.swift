@@ -13,7 +13,7 @@ public enum JKCSImageSize {
     case thumbnail, small, medium, large, extraLarge, original
 }
 
-public class JKCSImage: Equatable {
+open class JKCSImage: Equatable {
     public let id: String
     public var title: String = ""
     public var info: JKCSImageInfo {
@@ -143,7 +143,7 @@ public class JKCSImage: Equatable {
     }
 }
 
-public class JKCSImageData: JKCSCachable {
+open class JKCSImageData: JKCSCachable {
     public let id: String
     public var data: Data? {
         didSet {
@@ -159,7 +159,7 @@ public class JKCSImageData: JKCSCachable {
     }
 }
 
-public class JKCSImageInfo: JKCSCachable {
+open class JKCSImageInfo: JKCSCachable {
     public let id: String
     public var title: String
     public var author: String

@@ -9,7 +9,7 @@
 import Foundation
 import JKCSSwift
 
-public class JKCSFlickrImage: JKCSImage {
+open class JKCSFlickrImage: JKCSImage {
     public let farm: Int
     public let server: String
     public let secret: String
