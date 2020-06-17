@@ -155,60 +155,42 @@ open class JKCSFlickrImage: JKCSImage {
             completionHandler(Result.failure(.customError(message: "imageInfo abnormal")))
             return
         }
-        let imageInfo = self.info
         if let owner = photo["owner"] as? [String : Any] {
             if let realname = owner["realname"] as? String {
-                imageInfo.author = realname
+                self.info.author = realname
             }
             else if let username = owner["username"] as? String {
-                imageInfo.author = username
+                self.info.author = username
             }
         }
         if let dates = photo["dates"] as? [String : Any],
             let taken = dates["taken"] as? String {
-            imageInfo.date = taken
+            self.info.date = taken
         }
         if let description = photo["description"] as? [String : Any],
             let _content = description["_content"] as? String {
-            imageInfo.description = _content
+            self.info.description = _content
         }
         if let location = photo["location"] as? [String : Any],
             let latitude = location["latitude"] as? String,
             latitude.count != 0,
             let longitude = location["longitude"] as? String,
             longitude.count != 0 {
-            JKCSOpenCageGeoService.map(latitude: latitude, longitude: longitude) { [weak self] (result) in
+            JKCSOpenCageGeoService.mapFormatted(latitude: latitude, longitude: longitude) { [weak self] (result) in
                 switch result {
                 case .failure(let error):
                     print("OpenCageGeoService.map failed. \(error.message)")
-                    completionHandler(Result.failure(error))
+                    completionHandler(Result.success(nil))
                     return
                 case .success(let result):
-                    self?.parseMapLocation(result: result)
+                    self?.info.location = result
                     completionHandler(Result.success(nil))
                     return
                 }
             }
         }
         else {
-            self.info = imageInfo
             completionHandler(Result.success(nil))
         }
-    }
-    
-    private func parseMapLocation(result: [String : Any]) {
-        guard
-            let status = result["status"] as? [String : Any],
-            let code = status["code"] as? Int,
-            code == 200,
-            let results = result["results"] as? [[String : Any]],
-            let firstResult = results.first,
-            let formatted = firstResult["formatted"] as? String
-        else {
-            return
-        }
-        let imageInfo = self.info
-        imageInfo.location = formatted
-        self.info = imageInfo
     }
 }

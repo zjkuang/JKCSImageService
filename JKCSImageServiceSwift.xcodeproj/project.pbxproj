@@ -22,14 +22,12 @@
 
 /* Begin PBXBuildFile section */
 		520AE9B0249841D5009A5E77 /* JKCSImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AE9AD249841D5009A5E77 /* JKCSImageService.swift */; };
-		520AE9B1249841D5009A5E77 /* JKCSOpenCageGeoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AE9AE249841D5009A5E77 /* JKCSOpenCageGeoService.swift */; };
 		520AE9B2249841D5009A5E77 /* JKCSFlickr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AE9AF249841D5009A5E77 /* JKCSFlickr.swift */; };
 		520AE9B52498431D009A5E77 /* JKCSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AE9B32498431C009A5E77 /* JKCSImage.swift */; };
 		520AE9B62498431D009A5E77 /* JKCSFlickrImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AE9B42498431C009A5E77 /* JKCSFlickrImage.swift */; };
 		520AE9B9249844F3009A5E77 /* JKCSSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 520AE9B8249844F3009A5E77 /* JKCSSwift */; };
 		520AE9D32499B88B009A5E77 /* JKCSImgurImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AE9D12499B88B009A5E77 /* JKCSImgurImage.swift */; };
 		520AE9D42499B88B009A5E77 /* JKCSImgur.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520AE9D22499B88B009A5E77 /* JKCSImgur.swift */; };
-		OBJ_31 /* JKCSImageServiceSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* JKCSImageServiceSwift.swift */; };
 		OBJ_33 /* JKCSSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "JKCSSwift::JKCSSwift::Product" /* JKCSSwift.framework */; };
 		OBJ_41 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_52 /* JKCSImageServiceSwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* JKCSImageServiceSwiftTests.swift */; };
@@ -75,7 +73,6 @@
 
 /* Begin PBXFileReference section */
 		520AE9AD249841D5009A5E77 /* JKCSImageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCSImageService.swift; sourceTree = "<group>"; };
-		520AE9AE249841D5009A5E77 /* JKCSOpenCageGeoService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCSOpenCageGeoService.swift; sourceTree = "<group>"; };
 		520AE9AF249841D5009A5E77 /* JKCSFlickr.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCSFlickr.swift; sourceTree = "<group>"; };
 		520AE9B32498431C009A5E77 /* JKCSImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCSImage.swift; sourceTree = "<group>"; };
 		520AE9B42498431C009A5E77 /* JKCSFlickrImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JKCSFlickrImage.swift; sourceTree = "<group>"; };
@@ -92,7 +89,6 @@
 		OBJ_20 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; name = Package.swift; path = /Users/john/Work/github/SPMs/JKCSImageServiceSwift/.build/checkouts/JKCSSwift/Package.swift; sourceTree = "<group>"; };
 		OBJ_25 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_9 /* JKCSImageServiceSwift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JKCSImageServiceSwift.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +120,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		520AE9E5249A7D05009A5E77 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				520AE9AD249841D5009A5E77 /* JKCSImageService.swift */,
+				520AE9AF249841D5009A5E77 /* JKCSFlickr.swift */,
+				520AE9D22499B88B009A5E77 /* JKCSImgur.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		520AE9E6249A7D12009A5E77 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				520AE9B32498431C009A5E77 /* JKCSImage.swift */,
+				520AE9B42498431C009A5E77 /* JKCSFlickrImage.swift */,
+				520AE9D12499B88B009A5E77 /* JKCSImgurImage.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		OBJ_10 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,14 +219,8 @@
 		OBJ_8 /* JKCSImageServiceSwift */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* JKCSImageServiceSwift.swift */,
-				520AE9AD249841D5009A5E77 /* JKCSImageService.swift */,
-				520AE9AF249841D5009A5E77 /* JKCSFlickr.swift */,
-				520AE9AE249841D5009A5E77 /* JKCSOpenCageGeoService.swift */,
-				520AE9B32498431C009A5E77 /* JKCSImage.swift */,
-				520AE9B42498431C009A5E77 /* JKCSFlickrImage.swift */,
-				520AE9D22499B88B009A5E77 /* JKCSImgur.swift */,
-				520AE9D12499B88B009A5E77 /* JKCSImgurImage.swift */,
+				520AE9E6249A7D12009A5E77 /* Models */,
+				520AE9E5249A7D05009A5E77 /* Services */,
 			);
 			name = JKCSImageServiceSwift;
 			path = Sources/JKCSImageServiceSwift;
@@ -344,8 +354,6 @@
 				520AE9D42499B88B009A5E77 /* JKCSImgur.swift in Sources */,
 				520AE9B52498431D009A5E77 /* JKCSImage.swift in Sources */,
 				520AE9B2249841D5009A5E77 /* JKCSFlickr.swift in Sources */,
-				OBJ_31 /* JKCSImageServiceSwift.swift in Sources */,
-				520AE9B1249841D5009A5E77 /* JKCSOpenCageGeoService.swift in Sources */,
 				520AE9B62498431D009A5E77 /* JKCSFlickrImage.swift in Sources */,
 				520AE9D32499B88B009A5E77 /* JKCSImgurImage.swift in Sources */,
 			);
@@ -768,7 +776,7 @@
 			repositoryURL = "https://github.com/zjkuang/JKCSSwift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.5;
+				minimumVersion = 1.0.6;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
