@@ -9,7 +9,7 @@
 import Foundation
 import JKCSSwift
 
-public enum JKCSImageDataSourceType {
+public enum JKCSImageDataSourceType: String {
     case Flickr, Imgur
     // case Unsplash, Shutterstock, GettyImages
 }
