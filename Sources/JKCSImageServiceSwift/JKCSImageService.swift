@@ -12,6 +12,15 @@ import JKCSSwift
 public enum JKCSImageDataSourceType: String {
     case Flickr, Imgur
     // case Unsplash, Shutterstock, GettyImages
+    
+    public mutating func `switch`() {
+        switch self {
+        case .Flickr:
+            self = .Imgur
+        case .Imgur:
+            self = .Flickr
+        }
+    }
 }
 
 open class JKCSImageSearchResult {
