@@ -155,21 +155,22 @@ open class JKCSFlickrImage: JKCSImage {
             completionHandler(Result.failure(.customError(message: "imageInfo abnormal")))
             return
         }
+        let imageInfo = self.info
         if let owner = photo["owner"] as? [String : Any] {
             if let realname = owner["realname"] as? String {
-                self.info.author = realname
+                imageInfo.author = realname
             }
             else if let username = owner["username"] as? String {
-                self.info.author = username
+                imageInfo.author = username
             }
         }
         if let dates = photo["dates"] as? [String : Any],
             let taken = dates["taken"] as? String {
-            self.info.date = taken
+            imageInfo.date = taken
         }
         if let description = photo["description"] as? [String : Any],
             let _content = description["_content"] as? String {
-            self.info.description = _content
+            imageInfo.description = _content
         }
         if let location = photo["location"] as? [String : Any],
             let latitude = location["latitude"] as? String,
@@ -180,16 +181,19 @@ open class JKCSFlickrImage: JKCSImage {
                 switch result {
                 case .failure(let error):
                     print("OpenCageGeoService.map failed. \(error.message)")
+                    self?.info = imageInfo
                     completionHandler(Result.success(nil))
                     return
                 case .success(let result):
-                    self?.info.location = result
+                    imageInfo.location = result
+                    self?.info = imageInfo
                     completionHandler(Result.success(nil))
                     return
                 }
             }
         }
         else {
+            self.info = imageInfo
             completionHandler(Result.success(nil))
         }
     }
