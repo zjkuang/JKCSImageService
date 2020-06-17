@@ -23,6 +23,9 @@ open class JKCSFlickr: JKCSImageService {
         var page = page
         if page == -1 {
             searchResult.page += 1
+            if searchResult.page < 1 {
+                searchResult.page = 1
+            }
             page = searchResult.page
         }
         guard let urlString = flickrSearchURL(for: term, pageSize: pageSize, page: page) else {
