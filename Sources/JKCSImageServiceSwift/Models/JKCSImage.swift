@@ -1,6 +1,6 @@
 //
 //  ImagePack.swift
-//  Practice001
+//  JKCSImageServiceSwift
 //
 //  Created by Zhengqian Kuang on 2020-06-13.
 //  Copyright © 2020 Kuang. All rights reserved.

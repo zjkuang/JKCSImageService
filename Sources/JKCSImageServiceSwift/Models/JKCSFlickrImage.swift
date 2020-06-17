@@ -1,6 +1,6 @@
 //
 //  FlickrImagePack.swift
-//  Practice001
+//  JKCSImageServiceSwift
 //
 //  Created by Zhengqian Kuang on 2020-06-13.
 //  Copyright © 2020 Kuang. All rights reserved.
@@ -75,16 +75,12 @@ open class JKCSFlickrImage: JKCSImage {
             return
         }
         
-        // Flickr's flickr.photos.getInfo API has a very weird response format
-        // By default the response is an XML string with abnormal format which
-        // is not able to be parsed.
-        // So we need to add "format=json" as a parameter to the request, but
-        // the response is not parsable by JSONSerializer's jsonObject method,
+        // Unlike the other APIs, this one's response is in XML by default.
+        // An extra parameter "format=json" is needed for the request.
+        // Again, the "json response" fails JSONSerialization's jsonObject method.
         // Converting the response data to String (with .utf8) reveals that
-        // Flickr wrapped the JSON string in jsonFlickrApi(). So we need to
-        // drop the leading substring "jsonFlickrApi(" and the trailing sub-
-        // string ")" and then the remaining part will be able to be parsed
-        // into a JSON object.
+        // Flickr wrapped the JSON string in jsonFlickrApi() like "jsonFlickrApi(<json_response>)".
+        // So we need to drop the leading substring "jsonFlickrApi(" and the trailing substring ")"
         
         let urlString = JKCSFlickrImage.loadImageInfoURL(id: id)
         JKCSNetworkService.shared.dataTask(method: .GET, url: urlString, resultFormat: .data) { [weak self] (result) in
@@ -128,7 +124,8 @@ open class JKCSFlickrImage: JKCSImage {
     
     private static func loadImageInfoURL(id: String) -> String {
         // The response format defaults to be an XML
-        let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(flickrAppKey)&photo_id=\(id)&format=json"
+        let key = String(JKCSUnsplash.magic.reversed())
+        let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(key)&photo_id=\(id)&format=json"
         return urlString
     }
     

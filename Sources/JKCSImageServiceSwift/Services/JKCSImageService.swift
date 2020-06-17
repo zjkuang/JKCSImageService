@@ -1,6 +1,6 @@
 //
 //  JKCSImageService.swift
-//  Practice001
+//  JKCSImageServiceSwift
 //
 //  Created by Zhengqian Kuang on 2020-06-13.
 //  Copyright © 2020 Kuang. All rights reserved.
@@ -10,14 +10,11 @@ import Foundation
 import JKCSSwift
 
 public enum JKCSImageDataSourceType: String {
-    case Flickr, Imgur, Unsplash
-    // case Shutterstock, GettyImages
+    case Flickr, Unsplash
     
     public mutating func `switch`() {
         switch self {
         case .Flickr:
-            self = .Imgur
-        case .Imgur:
             self = .Unsplash
         case .Unsplash:
             self = .Flickr
