@@ -124,7 +124,7 @@ open class JKCSFlickrImage: JKCSImage {
     
     private static func loadImageInfoURL(id: String) -> String {
         // The response format defaults to be an XML
-        let key = String(JKCSUnsplash.magic.reversed())
+        let key = String(JKCSFlickr.magic.reversed())
         let urlString = "https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=\(key)&photo_id=\(id)&format=json"
         return urlString
     }
