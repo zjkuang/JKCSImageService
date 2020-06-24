@@ -11,23 +11,23 @@ import JKCSSwift
 
 open class JKCSUnsplashImage: JKCSImage {
     public init(id: String, urls: [String : String]) {
-        super.init(id: id)
+        super.init(id: id, provider: .Unsplash)
         
         if let thumb = urls["thumb"] {
-            self.thumbnailImageData = JKCSImageData(id: thumb)
+            self.thumbnailImageData = JKCSImageData(id: id, url: thumb, filename: getImageFilename(size: .thumbnail), provider: provider.rawValue)
         }
         if let small = urls["small"] {
-            self.smallImageData = JKCSImageData(id: small)
+            self.smallImageData = JKCSImageData(id: id, url: small, filename: getImageFilename(size: .small), provider: provider.rawValue)
         }
         if let regular = urls["regular"] {
-            self.mediumImageData = JKCSImageData(id: regular)
+            self.mediumImageData = JKCSImageData(id: id, url: regular, filename: getImageFilename(size: .medium), provider: provider.rawValue)
         }
         if let full = urls["full"] {
-            self.largeImageData = JKCSImageData(id: full)
+            self.largeImageData = JKCSImageData(id: id, url: full, filename: getImageFilename(size: .large), provider: provider.rawValue)
         }
         if let raw = urls["raw"] {
-            self.originalImageData = JKCSImageData(id: raw)
-            self.extraLargeImageData = JKCSImageData(id: raw)
+            self.extraLargeImageData = JKCSImageData(id: id, url: raw, filename: getImageFilename(size: .extraLarge), provider: provider.rawValue)
+            self.originalImageData = JKCSImageData(id: id, url: raw, filename: getImageFilename(size: .original), provider: provider.rawValue)
         }
     }
     

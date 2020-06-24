@@ -14,11 +14,12 @@ public enum JKCSImageSize {
 }
 
 open class JKCSImage: Equatable {
+    public let provider: JKCSImageDataSourceType
     public let id: String
     public var title: String = ""
     public var info: JKCSImageInfo {
         didSet {
-            info.save(key: id)
+            info.save(key: id) // *** save(key: filename, group: provider)
         }
     }
     public var thumbnailImageData: JKCSImageData? = nil
@@ -28,9 +29,10 @@ open class JKCSImage: Equatable {
     public var extraLargeImageData: JKCSImageData? = nil
     public var originalImageData: JKCSImageData? = nil
     
-    public init(id: String) {
+    public init(id: String, provider: JKCSImageDataSourceType) {
+        self.provider = provider
         self.id = id
-        self.info = JKCSImageInfo(id: id)
+        self.info = JKCSImageInfo(id: id, provider: provider.rawValue)
     }
     
     public static func == (lhs: JKCSImage, rhs: JKCSImage) -> Bool {
@@ -38,100 +40,68 @@ open class JKCSImage: Equatable {
     }
     
     public func retrieveImageDataFromCache(size: JKCSImageSize) -> JKCSCacheLookupResult {
-        switch size {
-        case .thumbnail:
-            guard let targetImageData = thumbnailImageData else { return .abnormal }
-            let result: Result<JKCSImageData?, JKCSError> = JKCSImageData.retrieve(key: targetImageData.id)
-            switch result {
-            case .failure(_):
-                return .abnormal
-            case .success(let imageData):
-                if let imageData = imageData {
-                    thumbnailImageData = imageData
-                    return .hit
-                }
-                return .miss
+        let imageFilename = getImageFilename(size: size)
+        let result: Result<JKCSImageData?, JKCSError> = JKCSImageData.retrieve(key: imageFilename, group: provider.rawValue)
+        switch result {
+        case .failure(_):
+            return .abnormal
+        case .success(let imageData):
+            guard let imageData = imageData else { return .miss }
+            switch size {
+            case .thumbnail:
+                thumbnailImageData = imageData
+            case .small:
+                smallImageData = imageData
+            case .medium:
+                mediumImageData = imageData
+            case .large:
+                largeImageData = imageData
+            case .extraLarge:
+                extraLargeImageData = imageData
+            case .original:
+                originalImageData = imageData
             }
-        case .small:
-            guard let targetImageData = smallImageData else { return .abnormal }
-            let result: Result<JKCSImageData?, JKCSError> = JKCSImageData.retrieve(key: targetImageData.id)
-            switch result {
-            case .failure(_):
-                return .abnormal
-            case .success(let imageData):
-                if let imageData = imageData {
-                    smallImageData = imageData
-                    return .hit
-                }
-                return .miss
-            }
-        case .medium:
-            guard let targetImageData = mediumImageData else { return .abnormal }
-            let result: Result<JKCSImageData?, JKCSError> = JKCSImageData.retrieve(key: targetImageData.id)
-            switch result {
-            case .failure(_):
-                return .abnormal
-            case .success(let imageData):
-                if let imageData = imageData {
-                    mediumImageData = imageData
-                    return .hit
-                }
-                return .miss
-            }
-        case .large:
-            guard let targetImageData = largeImageData else { return .abnormal }
-            let result: Result<JKCSImageData?, JKCSError> = JKCSImageData.retrieve(key: targetImageData.id)
-            switch result {
-            case .failure(_):
-                return .abnormal
-            case .success(let imageData):
-                if let imageData = imageData {
-                    largeImageData = imageData
-                    return .hit
-                }
-                return .miss
-            }
-        case .extraLarge:
-            guard let targetImageData = extraLargeImageData else { return .abnormal }
-            let result: Result<JKCSImageData?, JKCSError> = JKCSImageData.retrieve(key: targetImageData.id)
-            switch result {
-            case .failure(_):
-                return .abnormal
-            case .success(let imageData):
-                if let imageData = imageData {
-                    extraLargeImageData = imageData
-                    return .hit
-                }
-                return .miss
-            }
-        case .original:
-            guard let targetImageData = originalImageData else { return .abnormal }
-            let result: Result<JKCSImageData?, JKCSError> = JKCSImageData.retrieve(key: targetImageData.id)
-            switch result {
-            case .failure(_):
-                return .abnormal
-            case .success(let imageData):
-                if let imageData = imageData {
-                    originalImageData = imageData
-                    return .hit
-                }
-                return .miss
-            }
+            return .hit
         }
     }
     
     public func retrieveImageInfoFromCache() -> JKCSCacheLookupResult {
-        let result: Result<JKCSImageInfo?, JKCSError> = JKCSImageInfo.retrieve(key: id)
+        let result: Result<JKCSImageInfo?, JKCSError> = JKCSImageInfo.retrieve(key: id) // JKCSImageInfo.retrieve(key: id, group: provider.rawValue)
         switch result {
         case .failure(_):
             return .abnormal
         case .success(let imageInfo):
-            if let imageInfo = imageInfo {
-                info = imageInfo
-                return .hit
+            guard let imageInfo = imageInfo else {
+                return .miss
             }
-            return .miss
+            info = imageInfo
+            return .hit
         }
+    }
+    
+    func getSizeLetter(size: JKCSImageSize = .original) -> String {
+        var sizeLetter = "o" // original image, either a jpg, gif or png, depending on source format
+        switch size {
+        case .thumbnail:
+            sizeLetter = "t"
+        case .small:
+            sizeLetter = "n"
+        case .medium:
+            sizeLetter = "c"
+        case .large:
+            sizeLetter = "b"
+        case .extraLarge:
+            sizeLetter = "k"
+        default:
+            break
+        }
+        return sizeLetter
+    }
+    
+    func getImageFilename(size: JKCSImageSize) -> String {
+        let sizeLetter = getSizeLetter()
+        let filename = "\(id)_\(sizeLetter)"
+        return filename
     }
     
     open func loadImageData(size: JKCSImageSize, completionHandler: @escaping (Result<ExpressibleByNilLiteral?, JKCSError>) -> ()) {
@@ -143,32 +113,42 @@ open class JKCSImage: Equatable {
     }
 }
 
-open class JKCSImageData: JKCSCachable {
+open class JKCSImageData: JKCSCacheable {
+    public let provider: String
     public let id: String
+    public let url: String
+    public let filename: String
     public var data: Data? {
         didSet {
             if let _ = data {
-                save(key: id)
+                save(key: filename, group: provider)
             }
         }
     }
     
-    public init(id: String, data: Data? = nil) {
+    public init(id: String, url: String, filename: String, provider: String, data: Data? = nil) {
+        self.provider = provider
         self.id = id
+        self.url = url
+        self.filename = filename
         self.data = data
     }
 }
 
-open class JKCSImageInfo: JKCSCachable {
+open class JKCSImageInfo: JKCSCacheable {
+    public let provider: String
     public let id: String
+    public let filename: String
     public var title: String
     public var author: String
     public var date: String
     public var location: String
     public var description: String
     
-    public init(id: String, title: String = "", author: String = "", date: String = "", location: String = "", description: String = "") {
+    public init(id: String, filename: String? = nil, provider: String, title: String = "", author: String = "", date: String = "", location: String = "", description: String = "") {
+        self.provider = provider
         self.id = id
+        self.filename = filename ?? id
         self.title = title
         self.author = author
         self.date = date

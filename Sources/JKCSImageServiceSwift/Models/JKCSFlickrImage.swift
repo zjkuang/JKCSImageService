@@ -19,14 +19,14 @@ open class JKCSFlickrImage: JKCSImage {
         self.server = server
         self.secret = secret
         
-        super.init(id: id)
+        super.init(id: id, provider: .Flickr)
         
-        self.thumbnailImageData = JKCSImageData(id: JKCSFlickrImage.loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .thumbnail))
-        self.smallImageData = JKCSImageData(id: JKCSFlickrImage.loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .small))
-        self.mediumImageData = JKCSImageData(id: JKCSFlickrImage.loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .medium))
-        self.largeImageData = JKCSImageData(id: JKCSFlickrImage.loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .large))
-        self.extraLargeImageData = JKCSImageData(id: JKCSFlickrImage.loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .extraLarge))
-        self.originalImageData = JKCSImageData(id: JKCSFlickrImage.loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .original))
+        self.thumbnailImageData = JKCSImageData(id: id, url: loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .thumbnail), filename: getImageFilename(size: .thumbnail), provider: provider.rawValue)
+        self.smallImageData = JKCSImageData(id: id, url: loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .small), filename: getImageFilename(size: .small), provider: provider.rawValue)
+        self.mediumImageData = JKCSImageData(id: id, url: loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .medium), filename: getImageFilename(size: .medium), provider: provider.rawValue)
+        self.largeImageData = JKCSImageData(id: id, url: loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .large), filename: getImageFilename(size: .large), provider: provider.rawValue)
+        self.extraLargeImageData = JKCSImageData(id: id, url: loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .extraLarge), filename: getImageFilename(size: .extraLarge), provider: provider.rawValue)
+        self.originalImageData = JKCSImageData(id: id, url: loadImageURL(farm: farm, server: server, id: id, secret: secret, size: .original), filename: getImageFilename(size: .original), provider: provider.rawValue)
     }
     
     override public func loadImageData(size: JKCSImageSize = .original, completionHandler: @escaping (Result<ExpressibleByNilLiteral?, JKCSError>) -> ()) {
@@ -35,7 +35,7 @@ open class JKCSFlickrImage: JKCSImage {
             completionHandler(Result.success(nil))
             return
         }
-        let urlString = JKCSFlickrImage.loadImageURL(farm: farm, server: server, id: id, secret: secret, size: size)
+        let urlString = loadImageURL(farm: farm, server: server, id: id, secret: secret, size: size)
         JKCSNetworkService.shared.dataTask(method: .GET, url: urlString, resultFormat: .data) { [weak self] (result) in
             switch result {
             case .failure(let error):
@@ -101,23 +101,9 @@ open class JKCSFlickrImage: JKCSImage {
         }
     }
     
-    private static func loadImageURL(farm: Int, server: String, id: String, secret: String, size: JKCSImageSize = .original) -> String {
+    private func loadImageURL(farm: Int, server: String, id: String, secret: String, size: JKCSImageSize = .original) -> String {
         // ref. https://www.flickr.com/services/api/misc.urls.html
-        var sizeLetter = "o" // original image, either a jpg, gif or png, depending on source format
-        switch size {
-        case .thumbnail:
-            sizeLetter = "t"
-        case .small:
-            sizeLetter = "n"
-        case .medium:
-            sizeLetter = "c"
-        case .large:
-            sizeLetter = "b"
-        case .extraLarge:
-            sizeLetter = "k"
-        default:
-            break
-        }
+        let sizeLetter = getSizeLetter()
         let urlString = "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_\(sizeLetter).jpg"
         return urlString
     }
