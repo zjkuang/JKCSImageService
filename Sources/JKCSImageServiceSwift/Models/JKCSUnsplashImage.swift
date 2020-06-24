@@ -103,17 +103,17 @@ open class JKCSUnsplashImage: JKCSImage {
     private func loadImageURL(size: JKCSImageSize = .original) -> String? {
         switch size {
         case .thumbnail:
-            return thumbnailImageData?.id
+            return thumbnailImageData?.url
         case .small:
-            return smallImageData?.id
+            return smallImageData?.url
         case .medium:
-            return mediumImageData?.id
+            return mediumImageData?.url
         case .large:
-            return largeImageData?.id
+            return largeImageData?.url
         case .extraLarge:
-            return extraLargeImageData?.id
+            return extraLargeImageData?.url
         case .original:
-            return originalImageData?.id
+            return originalImageData?.url
         }
     }
     
