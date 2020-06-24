@@ -776,7 +776,7 @@
 			repositoryURL = "https://github.com/zjkuang/JKCSSwift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.11;
+				minimumVersion = 1.0.12;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
