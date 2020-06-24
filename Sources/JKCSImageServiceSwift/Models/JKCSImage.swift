@@ -17,11 +17,7 @@ open class JKCSImage: Equatable {
     public let provider: JKCSImageDataSourceType
     public let id: String
     public var title: String = ""
-    public var info: JKCSImageInfo {
-        didSet {
-            info.save(key: id) // *** save(key: filename, group: provider)
-        }
-    }
+    public var info: JKCSImageInfo
     public var thumbnailImageData: JKCSImageData? = nil
     public var smallImageData: JKCSImageData? = nil
     public var mediumImageData: JKCSImageData? = nil

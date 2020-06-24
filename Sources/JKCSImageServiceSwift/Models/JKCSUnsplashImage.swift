@@ -156,23 +156,31 @@ open class JKCSUnsplashImage: JKCSImage {
                     case .failure(let error):
                         print("OpenCageGeoService.map failed. \(error.message)")
                         // even though location parsing failed, let the imageInfo still be returned
-                        self?.info = imageInfo
-                        completionHandler(Result.success(nil))
-                        return
                     case .success(let result):
                         imageInfo.location = result
-                        self?.info = imageInfo
-                        completionHandler(Result.success(nil))
                         return
                     }
+                    self?.updateInfo(info: imageInfo, writeThrouthCache: true)
+                    completionHandler(Result.success(nil))
+                    return
                 }
+                return
             }
-            self.info = imageInfo
+            self.updateInfo(info: imageInfo, writeThrouthCache: true)
             completionHandler(Result.success(nil))
+            return
         }
         else {
-            self.info = imageInfo
+            self.updateInfo(info: imageInfo, writeThrouthCache: true)
             completionHandler(Result.success(nil))
+            return
+        }
+    }
+    
+    private func updateInfo(info: JKCSImageInfo, writeThrouthCache: Bool) {
+        self.info = info
+        if writeThrouthCache {
+            self.info.save(key: id, group: provider.rawValue)
         }
     }
 }
