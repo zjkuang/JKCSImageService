@@ -79,8 +79,8 @@ open class JKCSImage: Equatable {
         }
     }
     
-    func getSizeLetter(size: JKCSImageSize = .original) -> String {
-        var sizeLetter = "o" // original image, either a jpg, gif or png, depending on source format
+    func getSizeLetter(size: JKCSImageSize) -> String {
+        let sizeLetter: String // original image, either a jpg, gif or png, depending on source format
         switch size {
         case .thumbnail:
             sizeLetter = "t"
@@ -92,14 +92,14 @@ open class JKCSImage: Equatable {
             sizeLetter = "b"
         case .extraLarge:
             sizeLetter = "k"
-        default:
-            break
+        case .original:
+            sizeLetter = "o"
         }
         return sizeLetter
     }
     
     func getImageFilename(size: JKCSImageSize) -> String {
-        let sizeLetter = getSizeLetter()
+        let sizeLetter = getSizeLetter(size: size)
         let filename = "\(id)_\(sizeLetter)"
         return filename
     }

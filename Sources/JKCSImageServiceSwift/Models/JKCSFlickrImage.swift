@@ -101,9 +101,9 @@ open class JKCSFlickrImage: JKCSImage {
         }
     }
     
-    private func loadImageURL(farm: Int, server: String, id: String, secret: String, size: JKCSImageSize = .original) -> String {
+    private func loadImageURL(farm: Int, server: String, id: String, secret: String, size: JKCSImageSize) -> String {
         // ref. https://www.flickr.com/services/api/misc.urls.html
-        let sizeLetter = getSizeLetter()
+        let sizeLetter = getSizeLetter(size: size)
         let urlString = "https://farm\(farm).staticflickr.com/\(server)/\(id)_\(secret)_\(sizeLetter).jpg"
         return urlString
     }
