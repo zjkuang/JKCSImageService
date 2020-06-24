@@ -62,7 +62,7 @@ open class JKCSImage: Equatable {
     }
     
     public func retrieveImageInfoFromCache() -> JKCSCacheLookupResult {
-        let result: Result<JKCSImageInfo?, JKCSError> = JKCSImageInfo.retrieve(key: id) // JKCSImageInfo.retrieve(key: id, group: provider.rawValue)
+        let result: Result<JKCSImageInfo?, JKCSError> = JKCSImageInfo.retrieve(key: id, group: provider.rawValue)
         switch result {
         case .failure(_):
             return .abnormal
